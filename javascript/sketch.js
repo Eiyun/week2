@@ -3,11 +3,11 @@ class Creature {
   // this constructor is called when we define new Creature(...)
   constructor(_x, _y) {
     this.location = new createVector(_x, _y);  // Location of shape
-    this.velocity = new createVector(random(-2,2),random(-2,2));  // Velocity of shape
+    this.velocity = new createVector(random(-2,50),random(-2,50));  // Velocity of shape
     this.friction = new createVector(0, 0); 
     this.desired = new createVector(0, 0); 
-    this.diameter = random(10,40);
-    this.speedLimit = random(1,this.diameter/10);
+    this.diameter = random(1,40);
+    this.speedLimit = random(5,this.diameter/10);
     this.full = 0;
   }
 
@@ -37,11 +37,11 @@ class Creature {
  
   update() {
 
-    if(this.full<50){
+    if(this.full<100){
       this.friction.x = this.velocity.x * -1;
       this.friction.y = this.velocity.y * -1;
       this.friction.normalize();
-      this.friction.mult(0.01);
+      this.friction.mult(0.001);
       this.velocity.add(this.friction);
     }
 
@@ -72,10 +72,10 @@ class Creature {
       this.full--;
     }
   
-    // Display circle at location vector
+
     noStroke();
-    fill(map(this.full,0,100,0,255),0,255);
-    circle(this.location.x,this.location.y,this.diameter);
+    fill(map(this.full,0,100,0,255),random(250),random(250));
+    rect(this.location.x,this.location.y,this.diameter);
   }
 }
 
@@ -88,7 +88,7 @@ function setup() {
   // createCanvas(400, 400);
 
   canvas = createCanvas(windowWidth, windowHeight);
-  canvas.parent("sketch-container"); //move our canvas inside this HTML element
+  canvas.parent("sketch-container"); 
 
   addGUI();
 
@@ -99,9 +99,9 @@ function setup() {
 }
 
 function draw() {
-  background(200);
+  background(255);
   
-  // loop through all the creatrure and animate them each frame by accessing their update function
+  
   for (let c of creatures) {
     c.update();
     if(food.length > 0){
@@ -123,11 +123,11 @@ function draw() {
 
 function updateFood(){
   for(let i = food.length-1; i >= 0 ; i--){
-    fill(100);
+    fill(random(250),random(250),random(250));
     circle(food[i].x,food[i].y,food[i].d);
     food[i].y += 1;
     if(food[i].y > height){
-      food.splice(i,1);//remove one from array at index i
+      food.splice(i,5);
     }
   }
 }
@@ -154,7 +154,7 @@ function handleButtonPress()
       food.push({
           x:random(width),
           y:random(height/2),
-          d:random(5,20)
+          d:random(5,10)
         });
     }
     
